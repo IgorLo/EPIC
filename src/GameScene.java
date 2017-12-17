@@ -24,7 +24,7 @@ public class GameScene {
     public static GameScene getStartScene() {
 
 
-        Text title = new Text("123123");
+        Text title = new Text("");
         title.setFont(Font.font("Courier New", 40));
 
         BorderPane pane = new BorderPane();
