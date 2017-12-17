@@ -11,8 +11,6 @@ import javafx.util.Duration;
 
 import java.io.File;
 
-import static java.lang.Thread.sleep;
-
 public class GameWindow {
 
     GameScene gameScene;
@@ -24,8 +22,6 @@ public class GameWindow {
         player.setVolume(0.2);
         return player;
     }
-
-
 
     public void init(Stage stage) {
 
@@ -45,7 +41,7 @@ public class GameWindow {
         gameScene.text.setText("");
         Animation animation = animateText(gameScene.text, "Псалмопевец просит избавить его \nот уст лживых," +
                 "от языка лукавого. \nМы видим, что лживость, \nкак часто бывает..." +
-                "\n              \n      - Библия, песнь 119:2", 6000);
+                "\n              \n      - Библия, песнь 119:2", 12000);
 
         animation.getOnFinished();
         blackOut(200000, gameScene.rectangle);
@@ -55,12 +51,14 @@ public class GameWindow {
     public Animation animateText(Text text, String string, int time) {
 
         String content = string;
+
         final Animation animation = new Transition() {
             {
                 setCycleDuration(Duration.millis(time));
             }
 
             protected void interpolate(double frac) {
+
                 final int length = content.length();
                 final int n = Math.round(length * (float) frac);
                 text.setText(content.substring(0, n));

@@ -1,6 +1,8 @@
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -13,6 +15,7 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Screen;
 
 import java.io.File;
+import java.io.FileInputStream;
 
 
 public class GameScene {
@@ -27,6 +30,9 @@ public class GameScene {
         Text title = new Text("");
         title.setFont(Font.font("Courier New", 40));
 
+        String uriString = new File("resources/GLITCH.png").toURI().toString();
+        Image image = new Image(uriString);
+
         BorderPane pane = new BorderPane();
 
 
@@ -35,6 +41,10 @@ public class GameScene {
         Rectangle rect = new Rectangle(0,0,r.getWidth(),r.getHeight());
         rect.setFill(Color.BLACK);
 
+        ImageView imageView = new ImageView(image);
+        imageView.setOpacity(0.4);
+
+        pane.getChildren().add(imageView);
         pane.getChildren().add(rect);
         pane.getChildren().add(title);
 
