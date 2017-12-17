@@ -42,7 +42,7 @@ public class GameScene {
         rect.setFill(Color.BLACK);
 
         ImageView imageView = new ImageView(image);
-        imageView.setOpacity(0.4);
+        imageView.setOpacity(0.7);
 
         pane.getChildren().add(imageView);
         pane.getChildren().add(rect);
