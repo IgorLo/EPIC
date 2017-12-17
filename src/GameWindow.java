@@ -1,10 +1,14 @@
 
 import javafx.animation.Animation;
 import javafx.animation.Transition;
+import javafx.event.EventHandler;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -13,13 +17,16 @@ import java.io.File;
 
 public class GameWindow {
 
+    Stage gameWindow;
+
     GameScene gameScene;
     MediaPlayer player_background = initPlayerBackground();
+    boolean clicked = false;
 
     private MediaPlayer initPlayerBackground() {
         String uriString = new File("resources/MENU_MUSIC.mp3").toURI().toString();
         MediaPlayer player = new MediaPlayer( new Media(uriString));
-        player.setVolume(0.2);
+        player.setVolume(0.4);
         return player;
     }
 
@@ -29,26 +36,33 @@ public class GameWindow {
 
         this.gameScene = GameScene.getStartScene();
 
+        gameWindow = stage;
         stage.setTitle("TRAIN#1192");
+        stage.setFullScreen(false);
         stage.setScene(gameScene.scene);
-        stage.setFullScreen(true);
         stage.show();
 
     }
 
     public void start(){
 
-        gameScene.text.setText("");
-        Animation animation = animateText(gameScene.text, "Псалмопевец просит избавить его \nот уст лживых," +
-                "от языка лукавого. \nМы видим, что лживость, \nкак часто бывает..." +
-                "\n              \n      - Библия, песнь 119:2", 12000);
+        int fontSize = (int) (gameWindow.getHeight() / 27);
+        gameScene.text.setFont(Font.font("Courier New", FontWeight.LIGHT, fontSize));
 
-        animation.getOnFinished();
+        gameScene.text.setText("");
+        animateText(gameScene.text, "Каждый охотник желает знать,\n" +
+                "где сидит этот ёбаный гук.\n       \n" +
+                "Но каждый хороший охотник уже знает,\n" +
+                "что гук сидит на ёбаном дереве . . .\n" +
+                "                       \n" +
+                "               - Безымянный солдат, 1018 год", 12000);
+
+
         blackOut(200000, gameScene.rectangle);
 
     }
 
-    public Animation animateText(Text text, String string, int time) {
+    public void animateText(Text text, String string, int time) {
 
         String content = string;
 
@@ -64,11 +78,13 @@ public class GameWindow {
                 text.setText(content.substring(0, n));
                 text.setTranslateX(gameScene.scene.getWidth()/2 - text.getLayoutBounds().getWidth()/2);
                 text.setTranslateY(gameScene.scene.getHeight()/2 - text.getLayoutBounds().getHeight()/2);
+                int fontSize = (int) (Math.sqrt(gameWindow.getHeight()*gameWindow.getWidth()) / 30);
+                gameScene.text.setFont(Font.font("Courier New", FontWeight.LIGHT, fontSize));
+
             }
         };
 
         animation.play();
-        return animation;
 
     }
 
@@ -83,23 +99,20 @@ public class GameWindow {
                 if (rectangle.getOpacity() < 100.0)
                     rectangle.setOpacity(rectangle.getOpacity() + 0.0001 * Math.sqrt(Math.sqrt(System.currentTimeMillis() - startTime)));
                 if (gameScene.rectangle.getOpacity() >= 1.0){
+                    int fontSize = (int) (Math.sqrt(gameWindow.getHeight()*gameWindow.getWidth()) / 15);
+                    gameScene.text.setFont(Font.font("Courier New", FontWeight.LIGHT, fontSize));
                     gameScene.text.setFill(Color.WHITE);
-                    gameScene.text.setText("П Е Р В О Е\nП О С Е Щ Е Н И Е");
+                    if (!clicked)
+                        gameScene.text.setText("НАЧАТЬ ПОГРУЖЕНИЕ");
+                    gameScene.text.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
+                        @Override
+                        public void handle(MouseEvent mouseEvent) {
+                            gameScene.text.setText("НАЧАТЬ ПОГРУЖЕНИЕ\nВ ТВОЮ МАМАШУ");
+                            clicked = true;
+                        }
+                    });
                     gameScene.text.setTranslateX(gameScene.scene.getWidth()/2 - gameScene.text.getLayoutBounds().getWidth()/2);
                     gameScene.text.setTranslateY(gameScene.scene.getHeight()/2 - gameScene.text.getLayoutBounds().getHeight()/2);
-                }
-                if (gameScene.rectangle.getOpacity() >= 1.6){
-                    gameScene.text.setText("2  0  8  4   год");
-                    gameScene.text.setTranslateX(gameScene.scene.getWidth()/2 - gameScene.text.getLayoutBounds().getWidth()/2);
-                    gameScene.text.setTranslateY(gameScene.scene.getHeight()/2 - gameScene.text.getLayoutBounds().getHeight()/2);
-                }
-                if (gameScene.rectangle.getOpacity() >= 1.8){
-                    gameScene.text.setText("С   К   О   Р   О");
-                    gameScene.text.setTranslateX(gameScene.scene.getWidth()/2 - gameScene.text.getLayoutBounds().getWidth()/2);
-                    gameScene.text.setTranslateY(gameScene.scene.getHeight()/2 - gameScene.text.getLayoutBounds().getHeight()/2);
-                }
-                if (gameScene.rectangle.getOpacity() >= 2.0){
-                    gameScene.text.setFill(Color.BLACK);
                 }
             }
         };
