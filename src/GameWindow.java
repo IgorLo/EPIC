@@ -38,7 +38,7 @@ public class GameWindow {
 
         gameWindow = stage;
         stage.setTitle("TRAIN#1192");
-        stage.setFullScreen(false);
+        stage.setFullScreen(true);
         stage.setScene(gameScene.scene);
         stage.show();
 
